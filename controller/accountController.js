@@ -60,4 +60,4 @@ const transferFund = async(req,res)=>{
     }
 }
 
-export {transferFund,getBalance}
+module.exports = {transferFund,getBalance}

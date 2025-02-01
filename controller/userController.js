@@ -156,4 +156,4 @@ const regexSearch = async(req,res)=>{
     return res.status(500).send({ message: "Error Searching Users!" });
   }
 }
-export {updateUser,logoutUser,loginUser,createUser,regexSearch}
+module.exports = {updateUser,logoutUser,loginUser,createUser,regexSearch}

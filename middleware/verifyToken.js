@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const {User} = require('../Db/schema');
 
-export const verifyReq = async(req,res,next)=>{
+ const verifyReq = async(req,res,next)=>{
     const header = req.headers.authorization;
     if (!header) {
         return res.status(403).json({ message: 'Authorization header is missing' });
@@ -35,3 +35,4 @@ export const verifyReq = async(req,res,next)=>{
   }
 
 }
+module.exports = verifyReq
