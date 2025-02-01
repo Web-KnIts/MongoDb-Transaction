@@ -18,21 +18,29 @@ const {User} = require('../Db/schema');
     try
     {
         const payload = jwt.verify(token,process.env.JWT_SECRET);
-        const verifyUser = await User.findByID(payload._id);
-        if(verifyUser)
+        const verifyUser = await User.findById(payload.id);
+        console.log(verifyUser);
+        if(!verifyUser)
         {
-           req.user_id = verifyUser._id;
-           next(); 
+            return res.status(401).json({
+                message:"You are not authorized"
+            })
+         
         }
-
-        return res.status(401).json({
-            message:"You are not authorized"
-        })
+        req.user_id = verifyUser._id;
+       return next(); 
     }
     catch(err)
     {
-        return res.status(500).send({ message: "Something went wrong!" });
-  }
-
+    if (err.name === 'JsonWebTokenError') {
+        return res.status(401).json({ message: 'Invalid token' });
+      }
+      if (err.name === 'TokenExpiredError') {
+        return res.status(401).json({ message: 'Token expired' });
+      }
+      
+      // Catch other types of errors
+      return res.status(500).send({ message: 'Something went wrong!', error: err.message });
+    }
 }
 module.exports = verifyReq
